@@ -1,0 +1,11 @@
+
+devices
+| where hardware.type == laptop
+| where remote_action.customer_get_batteryhealth.outputs.BatteryHealthPercentage < 60
+| where device.warranty.status == "In Warranty"
+
+| summarize 
+    Last_User = user.name, 
+    Model = hardware.model,
+    Health = remote_action.customer_get_batteryhealth.outputs.BatteryHealthPercentage
+| list device.name, Last_User, Model, Health
